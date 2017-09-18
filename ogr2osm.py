@@ -53,6 +53,8 @@ from osgeo import ogr
 from osgeo import osr
 from geom import *
 
+from decimal import *
+
 # Determine major Python version is 2 or 3
 IS_PYTHON2 = sys.version_info < (3, 0)
 
@@ -655,7 +657,8 @@ def output():
             attributes.update({'timestamp':datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')})
 
         for node in nodes:
-            xmlattrs = {'visible':'true','id':str(node.id), 'lat':str(node.y*10**-options.significantDigits), 'lon':str(node.x*10**-options.significantDigits)}
+            #xmlattrs = {'visible':'true','id':str(node.id), 'lat':str(node.y*10**-options.significantDigits), 'lon':str(node.x*10**-options.significantDigits)}
+            xmlattrs = {'visible':'true','id':str(node.id), 'lat':Decimal(str(node.y*10**-options.significantDigits)).to_eng_string(), 'lon':Decimal(str(node.x*10**-options.significantDigits)).to_eng_string()}
             xmlattrs.update(attributes)
 
             xmlobject = etree.Element('node', xmlattrs)
